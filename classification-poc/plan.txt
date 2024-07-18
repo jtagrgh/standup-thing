@@ -1,0 +1,15 @@
+Types needed:
+	- Vec3d
+
+Functors needed:
+	- Average( AverageState state, 									uint16_t sample)
+	- AdjustGyro( AdjustGyroState state, 							uint16_t gyro_sample)
+	- Adjustcceleration( AdjustedAccelerationState state, 		uint16_t acceleration_sample)
+	- Integral( IntegralState state, 								uint16_t y)
+	- RotationMatrix( RotationMatrix state, 						Vec3d rotation_vector)
+	- DotProduct( DotProductState state, 							Vec3d a, Vec3d b)
+	- ComponentVector( ComponentVectorState state, 					Vec3d a, Vec3d b)
+	
+AnalysisResult analyze(BMI2SensData data[]) {
+	AverageState 
+}
