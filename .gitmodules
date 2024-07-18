@@ -1,0 +1,3 @@
+[submodule "msp430_bmi270_spi_example"]
+	path = msp430_bmi270_spi_example
+	url = https://github.com/dkter/msp430_bmi270_spi_example
