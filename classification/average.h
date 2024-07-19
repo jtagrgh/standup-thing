@@ -1,6 +1,8 @@
 #ifndef AVERAGE_H
 #define AVERAGE_H
 
+#include <stdint.h>
+
 typedef enum AverageStatus {
     AVERAGE_OK,
     AVERAGE_NOTOK
@@ -8,7 +10,11 @@ typedef enum AverageStatus {
 
 typedef struct AverageState {
     uint16_t n_samples; /* Number of samples */
-    uint16_t value; /* Average value */
+    double value; /* Average value */
 } AverageState;
+
+void init_average_state(AverageState *state);
+
+AverageStatus average(AverageState *state, double new_sample);
 
 #endif

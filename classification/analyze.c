@@ -1,53 +1,65 @@
 #include "analyze.h"
+#include "../commons/vec3d.h"
 #include "average.h"
+#include "adjust_acceleration.h"
+#include "adjust_gyro.h"
+#include "integral.h"
+#include "integral_3d.h"
+#include "rotate_vector.h"
+#include "vector_component.h"
+#include "constants.h"
 
-AnalysisStatus analyze(BMI2SensData data[], uint16_t n, BMI2SensAxisData g, AnalysisResult *out) {
+AnalysisStatus analyze(
+        BMI2SensData data[],
+        uint16_t data_length,
+        BMI2SensData g,
+        AnalysisResult *out) {
 
     AdjustAccelerationState acc_adjusted;
     init_adjust_acceleration_state(&acc_adjusted);
+
+    AdjustAccelerationState g_adjusted;
+    init_adjust_acceleration_state(&g_adjusted);
     
     AdjustGyroState gyr_adjusted;
     init_adjust_gyro_state(&gyr_adjusted);
     
-    IntegralState rotation_vector;
-    init_integral_state(&rotation_vector);
+    Integral3dState rotation_vector;
+    init_integral_3d_state(&rotation_vector, SAMPLE_PERIOD);
     
-    RotationMatrixState rotation_matrix;
-    init_rotation_matrix_state(&rotation_matrix);
+    RotateVectorState gravity_adjusted;
+    init_rotation_vector_state(&gravity_adjusted);
     
-    MatrixMultiplyState gravity_adjusted;
-    init_matrix_multiply_state(&gravity_adjusted);
-    
-    ComponentVectorState vertical_acc;
-    init_component_vector_state(&vertical_acc);
+    VectorComponentState vertical_acc;
+    init_vector_component_state(&vertical_acc);
     
     IntegralState vertical_vel;
-    init_integral_state(&vertical_vel);
+    init_integral_state(&vertical_vel, SAMPLE_PERIOD);
     
     IntegralState vertical_pos;
-    init_integral_state(&vertical_pos);
+    init_integral_state(&vertical_pos, SAMPLE_PERIOD);
     
     AverageState average_vertical_pos;
     init_average_state(&average_vertical_pos);
     
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < data_length; i++) {
         /* Adjust the raw acceleration vector. */
-        adjust_acceleration_state(&acc_adjusted, data[i].acc);
+        adjust_acceleration(&acc_adjusted, data[i].acc);
+
+        /* Adjust the raw gravity vector. */
+        adjust_acceleration(&g_adjusted, g.acc);
         
         /* Adjust the raw gyro vector. */
-        adjust_acceleration_state(&gyr_adjusted, data[i].gyr);
+        adjust_gyro(&gyr_adjusted, data[i].gyr);
         
         /* Integrate for the gyro position. */
-        integral(&rotation_vector, gyr_adjusted.value);
-        
-        /* Get the gyro rotation matrix */
-        rotation_matrix(&rotation_matrix, rotation_vector.value);
-        
-        /* Adjust gravity with the rotation matrix. */
-        matrix_multiply(&gravity_adjusted, g, rotation_matrix.value);
+        integral_3d(&rotation_vector, gyr_adjusted.value);
+
+        /* Rotate the gravity vector with the rotation vector. (This is not done well) */
+        rotate_vector(&gravity_adjusted, g_adjusted.value, rotation_vector.value);
         
         /* Get the vertical (gravity direction) component of acceleration. */
-        component_vector(&vertical_acc, acc_adjusted.value, gravity_adjusted.value);
+        vector_component(&vertical_acc, acc_adjusted.value, gravity_adjusted.value);
         
         /* Integrate for vertical velocity. */
         integral(&vertical_vel, vertical_acc.value);
@@ -62,5 +74,5 @@ AnalysisStatus analyze(BMI2SensData data[], uint16_t n, BMI2SensAxisData g, Anal
     /* Classify. */
     out->classification = classify(average_vertical_pos.value);
     
-    return OK;
+    return ANALYSIS_OK;
 }

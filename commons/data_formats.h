@@ -1,3 +1,6 @@
+#ifndef DATA_FORMATS_H
+#define DATA_FORMATS_H
+
 #include <stdint.h>
 
 typedef struct BMI2SensAxisData
@@ -23,3 +26,5 @@ typedef struct BMI2SensData
     /*! Sensor time */
     uint32_t sens_time;
 } BMI2SensData;
+
+#endif
