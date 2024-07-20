@@ -1,11 +1,14 @@
 #include "integral_3d.h"
 #include "../commons/vec3d.h"
+#include <stdio.h>
 
-void init_integral_3d_state(Integral3dState *state, double interval) {
+
+void init_integral_3d_state(Integral3dState *state, double interval, uint8_t debug) {
+    state->base.debug = debug;
     state->value = (Vec3d){0, 0, 0};
-    init_integral_state(&state->x, interval);
-    init_integral_state(&state->y, interval);
-    init_integral_state(&state->z, interval);
+    init_integral_state(&state->x, interval, debug);
+    init_integral_state(&state->y, interval, debug);
+    init_integral_state(&state->z, interval, debug);
 }
 
 void free_integral_3d_state(Integral3dState *state) {

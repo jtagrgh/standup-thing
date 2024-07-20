@@ -1,6 +1,8 @@
 #include "integral.h"
 #include "../commons/constants.h"
 #include "../commons/circular_buffer.h"
+#include <stdio.h>
+
 
 /*  Cummulative integral using four-points backwards rule. 
     https://ece.uwaterloo.ca/~dwharder/nm/Lecture_materials/pdfs/5.2.3%20Approximating%20integrals%20using%20interpolating%20polynomials.pdf
@@ -8,7 +10,8 @@
 
 static int16_t term_constants[] = {1, -5, 19, 9};
 
-void init_integral_state(IntegralState *state, double interval) {
+void init_integral_state(IntegralState *state, double interval, uint8_t debug) {
+    state->base.debug = debug;
     state->n_samples = 0;
     state->value = 0;
     state->interval = interval;
@@ -25,6 +28,11 @@ IntegralStatus integral(IntegralState *state, double new_sample) {
 
     if (state->n_samples < 4) {
         state->value += new_sample * state->interval;
+
+        if (state->base.debug) {
+            printf("%f, ", state->value);
+        }
+
         return INTEGRAL_OK;
     }
 
@@ -38,6 +46,10 @@ IntegralStatus integral(IntegralState *state, double new_sample) {
     area *= state->interval;
 
     state->value += area;
+
+    if (state->base.debug) {
+        printf("%f, ", state->value);
+    }
 
     return INTEGRAL_OK;
 }

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "../commons/vec3d.h"
 #include "../commons/data_formats.h"
+#include "analyze.h"
 
 typedef enum AdjustGyroStatus {
     ADJUST_GYRO_OK,
@@ -11,10 +12,11 @@ typedef enum AdjustGyroStatus {
 } AdjustGyroStatus;
 
 typedef struct AdjustGyroState {
+    AnalysisFunctor base;
     Vec3d value;
 } AdjustGyroState;
 
-void init_adjust_gyro_state(AdjustGyroState *state);
+void init_adjust_gyro_state(AdjustGyroState *state, uint8_t debug);
 
 AdjustGyroStatus adjust_gyro(AdjustGyroState *state, BMI2SensAxisData new_sample);
 

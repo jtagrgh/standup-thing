@@ -11,9 +11,10 @@ int main(int argc, char *argv[]) {
 	{
 		double values[] = {1, 2, 3, 4, 5};
 		AverageState state;
-		init_average_state(&state);
+		init_average_state(&state, 1);
 		for (int i = 0; i < 5; i++) {
 			average(&state, values[i]);
+			printf("\n");
 		}
 		printf("Average: %f, N_samples %d \n", state.value, state.n_samples);
 		printf("\n");
@@ -22,9 +23,10 @@ int main(int argc, char *argv[]) {
 	{
 		double values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 		IntegralState integral_state;
-		init_integral_state(&integral_state, 1);
+		init_integral_state(&integral_state, 1, 1);
 		for (int i = 0; i < 10; i++) {
 			integral(&integral_state, values[i]);
+			printf("\n");
 		}
 		printf("Integral: %f, N_samples %d \n", integral_state.value, integral_state.n_samples);
 		printf("\n");
@@ -39,9 +41,10 @@ int main(int argc, char *argv[]) {
 			{.x = 5, .y = 5, .z = -5}
 		};
 		Integral3dState integral_state;
-		init_integral_3d_state(&integral_state, 1);
+		init_integral_3d_state(&integral_state, 1, 1);
 		for (int i = 0; i < 5; i++) {
 			integral_3d(&integral_state, values[i]);
+			printf("\n");
 		}
 		printf("Integral 3D: %f, %f, %f, N_samples %d \n", integral_state.value.x, integral_state.value.y, integral_state.value.z, integral_state.x.n_samples);
 		printf("\n");
@@ -77,11 +80,12 @@ int main(int argc, char *argv[]) {
 		};
 
 		AdjustAccelerationState acc_adjusted;
-		init_adjust_acceleration_state(&acc_adjusted);
+		init_adjust_acceleration_state(&acc_adjusted, 1);
 		for (int i = 0; i < 10; i++) {
 			adjust_acceleration(&acc_adjusted, values[i]);
-			printf("Adjusted acceleration: %f, %f, %f \n", acc_adjusted.value.x, acc_adjusted.value.y, acc_adjusted.value.z);
+			printf("\n");
 		}
+		printf("Adjusted acceleration: %f, %f, %f \n", acc_adjusted.value.x, acc_adjusted.value.y, acc_adjusted.value.z);
 		printf("\n");
 	}
 

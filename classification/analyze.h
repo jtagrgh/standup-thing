@@ -1,6 +1,11 @@
+#ifndef ANALYZE_H
+#define ANALYZE_H
+
+
 #include "../commons/data_formats.h"
 #include "classify.h"
 #include "../commons/vec3d.h"
+#include "stdint.h"
 
 typedef struct AnalysisResult {
 	ActionType classification;
@@ -10,10 +15,17 @@ typedef enum AnalysisStatus {
 	ANALYSIS_OK
 } AnalysisStatus;
 
+typedef struct AnalysisFunctor {
+	uint8_t debug;
+} AnalysisFunctor;
+
 /* Analyze and classify motion data. */
 AnalysisStatus analyze(
 		BMI2SensData data[], 		/* Raw data. */
 		uint16_t data_length, 		/* Length of data. */
 		BMI2SensData g, 			/* Stable gravity recording. */
+		uint8_t debug, 				/* Debug flag. Will print all intermediate results.*/
 		AnalysisResult *out);		/* Output. */
 
+
+#endif

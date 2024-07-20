@@ -286,7 +286,8 @@ int main(void) {
 
                         AnalysisResult result = {0};
                         printf("analyzing...\n");
-                        AnalysisStatus status = analyze(sensor_data, DATA_LEN, sensor_data[0], &result);
+                        uint8_t debug = 1;
+                        AnalysisStatus status = analyze(sensor_data, DATA_LEN, sensor_data[0], debug, &result);
                         
                         printf("analyzed!\n");
                         switch (result.classification) {

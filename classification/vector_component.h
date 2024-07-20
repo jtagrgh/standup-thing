@@ -2,6 +2,7 @@
 #define VECTOR_COMPONENT_H
 
 #include "../commons/vec3d.h"
+#include "analyze.h"
 
 
 typedef enum VectorComponentStatus {
@@ -10,10 +11,11 @@ typedef enum VectorComponentStatus {
 } VectorComponentStatus;
 
 typedef struct VectorComponentState {
+    AnalysisFunctor base;
     double value;
 } VectorComponentState;
 
-void init_vector_component_state(VectorComponentState *state);
+void init_vector_component_state(VectorComponentState *state, uint8_t debug);
 
 VectorComponentStatus vector_component(VectorComponentState *state, Vec3d a, Vec3d b);
 

@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 #include "../commons/circular_buffer.h"
+#include "analyze.h"
+
 
 typedef enum IntegralStatus {
     INTEGRAL_OK,
@@ -10,13 +12,14 @@ typedef enum IntegralStatus {
 } IntegralStatus;
 
 typedef struct IntegralState {
+    AnalysisFunctor base;
     uint16_t n_samples;
     double value;
     double interval;
     CircularBuffer samples;
 } IntegralState;
 
-void init_integral_state(IntegralState *state, double interval);
+void init_integral_state(IntegralState *state, double interval, uint8_t debug);
 void free_integral_state(IntegralState *state);
 
 IntegralStatus integral(IntegralState *state, double new_sample);

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "../commons/vec3d.h"
 #include "../commons/data_formats.h"
+#include "analyze.h"
 
 typedef enum AdjustAccelerationStatus {
     ADJUST_ACCELERATION_OK,
@@ -11,10 +12,11 @@ typedef enum AdjustAccelerationStatus {
 } AdjustAccelerationStatus;
 
 typedef struct AdjustAccelerationState {
+    AnalysisFunctor base;
     Vec3d value;
 } AdjustAccelerationState;
 
-void init_adjust_acceleration_state(AdjustAccelerationState *state);
+void init_adjust_acceleration_state(AdjustAccelerationState *state, uint8_t debug);
 
 AdjustAccelerationStatus adjust_acceleration(AdjustAccelerationState *state, BMI2SensAxisData new_sample);
 

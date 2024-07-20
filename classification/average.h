@@ -2,6 +2,8 @@
 #define AVERAGE_H
 
 #include <stdint.h>
+#include "analyze.h"
+
 
 typedef enum AverageStatus {
     AVERAGE_OK,
@@ -9,11 +11,12 @@ typedef enum AverageStatus {
 } AverageStatus;
 
 typedef struct AverageState {
+    AnalysisFunctor base;
     uint16_t n_samples; /* Number of samples */
     double value; /* Average value */
 } AverageState;
 
-void init_average_state(AverageState *state);
+void init_average_state(AverageState *state, uint8_t debug);
 
 AverageStatus average(AverageState *state, double new_sample);
 
