@@ -7,7 +7,7 @@
 #include "integral_3d.h"
 #include "rotate_vector.h"
 #include "vector_component.h"
-#include "constants.h"
+#include "../commons/constants.h"
 
 AnalysisStatus analyze(
         BMI2SensData data[],
@@ -42,7 +42,8 @@ AnalysisStatus analyze(
     AverageState average_vertical_pos;
     init_average_state(&average_vertical_pos);
     
-    for (int i = 0; i < data_length; i++) {
+    int i;
+    for (i = 0; i < data_length; i++) {
         /* Adjust the raw acceleration vector. */
         adjust_acceleration(&acc_adjusted, data[i].acc);
 

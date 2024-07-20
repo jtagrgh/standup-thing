@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void vec3d_print(Vec3d a) {
-    printf("<%f %f %f>\n", a.x, a.y, a.z);
+    //printf("<%f %f %f>\n", a.x, a.y, a.z);
 }
 
 Vec3d vec3d_cross_product(Vec3d a, Vec3d b)

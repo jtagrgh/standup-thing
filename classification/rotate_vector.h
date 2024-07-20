@@ -1,7 +1,7 @@
 #ifndef ROTATE_VECTOR_H
 #define ROTATE_VECTOR_H
 
-#include "vec3d.h"
+#include "../commons/vec3d.h"
 
 typedef enum RotateVectorStatus {
     ROTATE_VECTOR_OK,

@@ -1,6 +1,6 @@
-#include "data_formats.h"
+#include "../commons/data_formats.h"
 #include "classify.h"
-#include "vec3d.h"
+#include "../commons/vec3d.h"
 
 typedef struct AnalysisResult {
 	ActionType classification;

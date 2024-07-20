@@ -2,8 +2,8 @@
 #define ADJUST_GYRO_H
 
 #include <stdint.h>
-#include "vec3d.h"
-#include "data_formats.h"
+#include "../commons/vec3d.h"
+#include "../commons/data_formats.h"
 
 typedef enum AdjustGyroStatus {
     ADJUST_GYRO_OK,

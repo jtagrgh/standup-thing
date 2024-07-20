@@ -1,7 +1,7 @@
 #ifndef VECTOR_COMPONENT_H
 #define VECTOR_COMPONENT_H
 
-#include "vec3d.h"
+#include "../commons/vec3d.h"
 
 
 typedef enum VectorComponentStatus {

@@ -2,8 +2,8 @@
 #define ADJUST_ACCERATION_H
 
 #include <stdint.h>
-#include "vec3d.h"
-#include "data_formats.h"
+#include "../commons/vec3d.h"
+#include "../commons/data_formats.h"
 
 typedef enum AdjustAccelerationStatus {
     ADJUST_ACCELERATION_OK,

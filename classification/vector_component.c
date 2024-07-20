@@ -1,5 +1,5 @@
 #include "vector_component.h"
-#include "vec3d.h"
+#include "../commons/vec3d.h"
 
 
 void init_vector_component_state(VectorComponentState *state) {

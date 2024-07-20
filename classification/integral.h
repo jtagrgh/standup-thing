@@ -2,7 +2,7 @@
 #define INTEGRAL_H
 
 #include <stdint.h>
-#include "circular_buffer.h"
+#include "../commons/circular_buffer.h"
 
 typedef enum IntegralStatus {
     INTEGRAL_OK,

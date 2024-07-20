@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "integral.h"
-#include "vec3d.h"
+#include "../commons/vec3d.h"
 
 typedef enum Integral3dStatus {
     INTEGRAL_3D_OK,
