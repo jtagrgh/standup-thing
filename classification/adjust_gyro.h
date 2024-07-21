@@ -16,7 +16,7 @@ typedef struct AdjustGyroState {
     Vec3d value;
 } AdjustGyroState;
 
-void init_adjust_gyro_state(AdjustGyroState *state, uint8_t debug);
+void init_adjust_gyro_state(AdjustGyroState *state);
 
 AdjustGyroStatus adjust_gyro(AdjustGyroState *state, BMI2SensAxisData new_sample);
 

@@ -16,7 +16,7 @@ typedef struct AdjustAccelerationState {
     Vec3d value;
 } AdjustAccelerationState;
 
-void init_adjust_acceleration_state(AdjustAccelerationState *state, uint8_t debug);
+void init_adjust_acceleration_state(AdjustAccelerationState *state);
 
 AdjustAccelerationStatus adjust_acceleration(AdjustAccelerationState *state, BMI2SensAxisData new_sample);
 

@@ -10,8 +10,7 @@
 
 static int16_t term_constants[] = {1, -5, 19, 9};
 
-void init_integral_state(IntegralState *state, double interval, uint8_t debug) {
-    state->base.debug = debug;
+void init_integral_state(IntegralState *state, double interval) {
     state->n_samples = 0;
     state->value = 0;
     state->interval = interval;
@@ -30,7 +29,7 @@ IntegralStatus integral(IntegralState *state, double new_sample) {
         state->value += new_sample * state->interval;
 
         if (state->base.debug) {
-            printf("%f, ", state->value);
+            printf("%s:%f,", state->base.name, state->value);
         }
 
         return INTEGRAL_OK;
@@ -48,7 +47,7 @@ IntegralStatus integral(IntegralState *state, double new_sample) {
     state->value += area;
 
     if (state->base.debug) {
-        printf("%f, ", state->value);
+        printf("%s:%f,", state->base.name, state->value);
     }
 
     return INTEGRAL_OK;

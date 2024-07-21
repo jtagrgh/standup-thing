@@ -15,9 +15,14 @@ typedef enum AnalysisStatus {
 	ANALYSIS_OK
 } AnalysisStatus;
 
+#define ANALYSIS_FUNCTOR_NAME_LENGTH 50
+
 typedef struct AnalysisFunctor {
 	uint8_t debug;
+	char name[ANALYSIS_FUNCTOR_NAME_LENGTH];
 } AnalysisFunctor;
+
+void init_analysis_functor(AnalysisFunctor *functor, uint8_t debug, char name[20]);
 
 /* Analyze and classify motion data. */
 AnalysisStatus analyze(

@@ -19,7 +19,7 @@ typedef struct IntegralState {
     CircularBuffer samples;
 } IntegralState;
 
-void init_integral_state(IntegralState *state, double interval, uint8_t debug);
+void init_integral_state(IntegralState *state, double interval);
 void free_integral_state(IntegralState *state);
 
 IntegralStatus integral(IntegralState *state, double new_sample);

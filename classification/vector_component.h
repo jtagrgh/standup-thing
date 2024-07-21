@@ -15,7 +15,7 @@ typedef struct VectorComponentState {
     double value;
 } VectorComponentState;
 
-void init_vector_component_state(VectorComponentState *state, uint8_t debug);
+void init_vector_component_state(VectorComponentState *state);
 
 VectorComponentStatus vector_component(VectorComponentState *state, Vec3d a, Vec3d b);
 

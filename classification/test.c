@@ -4,6 +4,7 @@
 #include "integral.h"
 #include "integral_3d.h"
 #include "adjust_acceleration.h"
+#include "../commons/constants.h"
 
 
 int main(int argc, char *argv[]) {
@@ -11,7 +12,8 @@ int main(int argc, char *argv[]) {
 	{
 		double values[] = {1, 2, 3, 4, 5};
 		AverageState state;
-		init_average_state(&state, 1);
+		init_analysis_functor(&state.base, 1, "average");
+		init_average_state(&state);
 		for (int i = 0; i < 5; i++) {
 			average(&state, values[i]);
 			printf("\n");
@@ -21,10 +23,11 @@ int main(int argc, char *argv[]) {
 	}
 
 	{
-		double values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+		double values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, -50, -51, -52, -53, -54, -55, -56, -57, -58, -59, -60, -61, -62, -63, -64, -65, -66, -67, -68, -69, -70, -71, -72, -73, -74, -75, -76, -77, -78, -79, -80, -81, -82, -83, -84, -85, -86, -87, -88, -89, -90, -91, -92, -93, -94, -95, -96, -97, -98, -99};
 		IntegralState integral_state;
-		init_integral_state(&integral_state, 1, 1);
-		for (int i = 0; i < 10; i++) {
+		init_analysis_functor(&integral_state.base, 1, "integral");
+		init_integral_state(&integral_state, SAMPLE_PERIOD);
+		for (int i = 0; i < 100; i++) {
 			integral(&integral_state, values[i]);
 			printf("\n");
 		}
@@ -41,7 +44,8 @@ int main(int argc, char *argv[]) {
 			{.x = 5, .y = 5, .z = -5}
 		};
 		Integral3dState integral_state;
-		init_integral_3d_state(&integral_state, 1, 1);
+		init_analysis_functor(&integral_state.base, 1, "integral_3d");
+		init_integral_3d_state(&integral_state, 1);
 		for (int i = 0; i < 5; i++) {
 			integral_3d(&integral_state, values[i]);
 			printf("\n");
@@ -80,7 +84,8 @@ int main(int argc, char *argv[]) {
 		};
 
 		AdjustAccelerationState acc_adjusted;
-		init_adjust_acceleration_state(&acc_adjusted, 1);
+		init_analysis_functor(&acc_adjusted.base, 1, "acc_adjusted");
+		init_adjust_acceleration_state(&acc_adjusted);
 		for (int i = 0; i < 10; i++) {
 			adjust_acceleration(&acc_adjusted, values[i]);
 			printf("\n");

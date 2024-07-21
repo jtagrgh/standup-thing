@@ -20,7 +20,7 @@ typedef struct Integral3dState {
     IntegralState z;
 } Integral3dState;
 
-void init_integral_3d_state(Integral3dState *state, double interval, uint8_t debug);
+void init_integral_3d_state(Integral3dState *state, double interval);
 void free_integral_3d_state(Integral3dState *state);
 
 Integral3dStatus integral_3d(Integral3dState *state, Vec3d new_sample);

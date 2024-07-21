@@ -15,7 +15,7 @@ typedef struct RotateVectorState {
     Vec3d value;
 } RotateVectorState;
 
-void init_rotation_vector_state(RotateVectorState *state, uint8_t debug);
+void init_rotation_vector_state(RotateVectorState *state);
 
 RotateVectorStatus rotate_vector(RotateVectorState *state, Vec3d a, Vec3d rotation_vector);
 

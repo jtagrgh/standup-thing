@@ -4,8 +4,7 @@
 #include <stdio.h>
 
 
-void init_adjust_gyro_state(AdjustGyroState *state, uint8_t debug) {
-    state->base.debug = debug;
+void init_adjust_gyro_state(AdjustGyroState *state) {
     state->value.x = 0;
     state->value.y = 0;
     state->value.z = 0;
@@ -21,7 +20,7 @@ AdjustGyroStatus adjust_gyro(AdjustGyroState *state, BMI2SensAxisData new_sample
     state->value.z = convert_axis_value(new_sample.z);
 
     if (state->base.debug) {
-        printf("%f, %f, %f, ", state->value.x, state->value.y, state->value.z);
+        printf("%s_x:%f,%s_y:%f,%s_z:%f,", state->base.name, state->value.x, state->base.name, state->value.y, state->base.name, state->value.z);
     }
 
     return ADJUST_GYRO_OK;

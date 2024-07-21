@@ -16,7 +16,7 @@ typedef struct AverageState {
     double value; /* Average value */
 } AverageState;
 
-void init_average_state(AverageState *state, uint8_t debug);
+void init_average_state(AverageState *state);
 
 AverageStatus average(AverageState *state, double new_sample);
 
