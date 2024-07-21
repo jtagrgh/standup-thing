@@ -22,7 +22,7 @@ typedef struct AnalysisFunctor {
 	char name[ANALYSIS_FUNCTOR_NAME_LENGTH];
 } AnalysisFunctor;
 
-void init_analysis_functor(AnalysisFunctor *functor, uint8_t debug, char name[20]);
+void init_analysis_functor(AnalysisFunctor *functor, uint8_t debug, char name[ANALYSIS_FUNCTOR_NAME_LENGTH]);
 
 /* Analyze and classify motion data. */
 AnalysisStatus analyze(
