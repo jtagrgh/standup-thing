@@ -2,6 +2,8 @@
 #define VEC3D_H
 
 #include <stdint.h>
+#include "data_formats.h"
+
 
 typedef struct Vec3d {
     double x;
@@ -25,5 +27,7 @@ Vec3d vec3d_rotate_about_x(Vec3d a, double angle);
 Vec3d vec3d_rotate_about_y(Vec3d a, double angle);
 Vec3d vec3d_rotate_about_z(Vec3d a, double angle);
 Vec3d vec3d_rotate_by_rotation_vector_assuming_things_that_arent_true(Vec3d a, Vec3d rotation_vector);
+Vec3d bmisensdata_to_vec3d(BMI2SensAxisData data);
+BMI2SensAxisData vec3d_to_bmisensdata(Vec3d data);
 
 #endif

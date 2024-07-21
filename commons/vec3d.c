@@ -1,9 +1,27 @@
 #include "vec3d.h"
 #include <math.h>
 #include <stdio.h>
+#include "data_formats.h"
+
 
 void vec3d_print(Vec3d a) {
     //printf("<%f %f %f>\n", a.x, a.y, a.z);
+}
+
+Vec3d bmisensdata_to_vec3d(BMI2SensAxisData data) {
+    return (Vec3d) {
+        data.x,
+        data.y,
+        data.z
+    };
+}
+
+BMI2SensAxisData vec3d_to_bmisensdata(Vec3d data) {
+    return (BMI2SensAxisData) {
+        data.x,
+        data.y,
+        data.z
+    };
 }
 
 Vec3d vec3d_cross_product(Vec3d a, Vec3d b)
