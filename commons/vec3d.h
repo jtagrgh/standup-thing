@@ -14,6 +14,7 @@ void vec3d_print(Vec3d a);
 Vec3d vec3d_cross_product(Vec3d a, Vec3d b);
 double vec3d_dot_product(Vec3d a, Vec3d b);
 Vec3d vec3d_add_vectors(Vec3d a, Vec3d b);
+Vec3d vec3d_sub_vectors(Vec3d a, Vec3d b);
 Vec3d vec3d_add_scalar(Vec3d a, double scalar);
 Vec3d vec3d_multiply_scalar(Vec3d a, double scalar);
 double vec3d_magnitude(Vec3d a);

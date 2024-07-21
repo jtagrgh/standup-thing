@@ -69,16 +69,16 @@ AnalysisStatus analyze(
         adjust_acceleration(&g_adjusted, g.acc);
         
         /* Adjust the raw gyro vector. */
-        adjust_gyro(&gyr_adjusted, data[i].gyr);
+        // adjust_gyro(&gyr_adjusted, data[i].gyr);
         
         /* Integrate for the gyro position. */
-        integral_3d(&rotation_vector, gyr_adjusted.value);
+        // integral_3d(&rotation_vector, gyr_adjusted.value);
 
         /* Rotate the gravity vector with the rotation vector. (This is not done well) */
-        rotate_vector(&gravity_adjusted, g_adjusted.value, rotation_vector.value);
+        // rotate_vector(&gravity_adjusted, g_adjusted.value, rotation_vector.value);
         
         /* Get the vertical (gravity direction) component of acceleration. */
-        vector_component(&vertical_acc, acc_adjusted.value, gravity_adjusted.value);
+        vector_component(&vertical_acc, acc_adjusted.value, g_adjusted.value);
         
         /* Integrate for vertical velocity. */
         integral(&vertical_vel, vertical_acc.value);

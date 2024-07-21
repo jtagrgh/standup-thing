@@ -4,6 +4,7 @@
 #include "integral.h"
 #include "integral_3d.h"
 #include "adjust_acceleration.h"
+#include "vector_component.h"
 #include "../commons/constants.h"
 
 
@@ -95,7 +96,17 @@ int main(int argc, char *argv[]) {
 	}
 
 	{
-
+		Vec3d g = {.x = 0, .y = 1, .z = 9.8};
+		Vec3d a = {.x = 1, .y = 1, .z = -1};
+		// a - g = <1, 0, -10.8>
+		// y = (a - g) . g = 1*0 + 0*1 + -10.8*9.8 = -105.84
+		// |g| = sqrt(0**2 + 1**2 + 9.8**2) = 9.850888284819803
+		// y / |g| = -10.74420873933767
+		VectorComponentState a_sub_onto_g;
+		init_analysis_functor(&a_sub_onto_g.base, 1, "a_sub_onto_g");
+        vector_component(&a_sub_onto_g, a, g);
+		printf("\n");
+		printf("Vector component: %f \n", a_sub_onto_g.value);
 	}
 
 	return 0;

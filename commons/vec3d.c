@@ -47,6 +47,14 @@ Vec3d vec3d_multiply_scalar(Vec3d a, double scalar) {
     };
 }
 
+Vec3d vec3d_sub_vectors(Vec3d a, Vec3d b) {
+    return (Vec3d) {
+        a.x - b.x,
+        a.y - b.y,
+        a.z - b.z
+    };
+}
+
 double vec3d_magnitude(Vec3d a) {
     return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
 }
