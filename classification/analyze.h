@@ -15,7 +15,7 @@ typedef enum AnalysisStatus {
 	ANALYSIS_OK
 } AnalysisStatus;
 
-#define ANALYSIS_FUNCTOR_NAME_LENGTH 50
+#define ANALYSIS_FUNCTOR_NAME_LENGTH 21
 
 typedef struct AnalysisFunctor {
 	uint8_t debug;

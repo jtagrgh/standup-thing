@@ -22,7 +22,7 @@ P1.7: UCB0SOMI (peripheral out, controller in) -> BMI270 pin 1
 #include "commons/data_formats.h"
 
  // 200hz * 20sec
-#define DATA_LEN 1000
+#define DATA_LEN 350
 
 #pragma PERSISTENT(sensor_data)
 static struct BMI2SensData sensor_data[DATA_LEN] = { { { 0 } } };
