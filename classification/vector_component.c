@@ -9,7 +9,7 @@ void init_vector_component_state(VectorComponentState *state) {
 
 VectorComponentStatus vector_component(VectorComponentState *state, Vec3d a, Vec3d b) {
     Vec3d a_less_b = vec3d_sub_vectors(a, b);
-    state->value = vec3d_component(a_less_b, b);
+    state->value = vec3d_component(a_less_b, b, 0.0001);
 
     if (state->base.debug) {
         printf("%s:%f,", state->base.name, state->value);

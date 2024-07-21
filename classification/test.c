@@ -6,6 +6,7 @@
 #include "adjust_acceleration.h"
 #include "vector_component.h"
 #include "../commons/constants.h"
+#include "../commons/data_formats.h"
 
 
 int main(int argc, char *argv[]) {
@@ -107,6 +108,25 @@ int main(int argc, char *argv[]) {
         vector_component(&a_sub_onto_g, a, g);
 		printf("\n");
 		printf("Vector component: %f \n", a_sub_onto_g.value);
+	}
+
+	{
+		BMI2SensData test_data[] = {
+			{.acc = {.x = 0, .y = 0, .z = 0}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 0},
+			{.acc = {.x = 1, .y = 1, .z = 1}, .gyr = {.x = 1, .y = 1, .z = 1}, .sens_time = 1},
+			{.acc = {.x = 2, .y = 2, .z = 2}, .gyr = {.x = 2, .y = 2, .z = 2}, .sens_time = 2},
+			{.acc = {.x = 3, .y = 3, .z = 3}, .gyr = {.x = 3, .y = 3, .z = 3}, .sens_time = 3},
+			{.acc = {.x = 4, .y = 4, .z = 4}, .gyr = {.x = 4, .y = 4, .z = 4}, .sens_time = 4},
+			{.acc = {.x = 5, .y = 5, .z = 5}, .gyr = {.x = 5, .y = 5, .z = 5}, .sens_time = 5},
+			{.acc = {.x = 6, .y = 6, .z = 6}, .gyr = {.x = 6, .y = 6, .z = 6}, .sens_time = 6},
+			{.acc = {.x = 7, .y = 7, .z = 7}, .gyr = {.x = 7, .y = 7, .z = 7}, .sens_time = 7},
+			{.acc = {.x = 8, .y = 8, .z = 8}, .gyr = {.x = 8, .y = 8, .z = 8}, .sens_time = 8},
+			{.acc = {.x = 9, .y = 9, .z = 9}, .gyr = {.x = 9, .y = 9, .z = 9}, .sens_time = 9},
+		};
+
+		AnalysisResult result;
+		AnalysisStatus status = analyze(test_data, 10, test_data[9], 1, &result);
+		printf("Analysis result: %d \n", result.classification);
 	}
 
 	return 0;

@@ -19,8 +19,12 @@ double vec3d_dot_product(Vec3d a, Vec3d b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-double vec3d_component(Vec3d a, Vec3d b) {
-    return vec3d_dot_product(a, b) / vec3d_magnitude(b);
+double vec3d_component(Vec3d a, Vec3d b, double tolerance) {
+    double magnitude_b = vec3d_magnitude(b);
+    if (magnitude_b <= tolerance) {
+        return 0;
+    }
+    return vec3d_dot_product(a, b) / magnitude_b;
 }
 
 Vec3d vec3d_add_vectors(Vec3d a, Vec3d b) {

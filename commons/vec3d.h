@@ -18,7 +18,7 @@ Vec3d vec3d_sub_vectors(Vec3d a, Vec3d b);
 Vec3d vec3d_add_scalar(Vec3d a, double scalar);
 Vec3d vec3d_multiply_scalar(Vec3d a, double scalar);
 double vec3d_magnitude(Vec3d a);
-double vec3d_component(Vec3d a, Vec3d b);
+double vec3d_component(Vec3d a, Vec3d b, double tolerance);
 Vec3d vec3d_project(Vec3d a, Vec3d b);
 Vec3d vec3d_rotate_vector(Vec3d a, Vec3d axis, double angle);
 Vec3d vec3d_rotate_about_x(Vec3d a, double angle);
