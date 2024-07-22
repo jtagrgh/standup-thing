@@ -1,5 +1,6 @@
 #include "average.h"
 #include "stdio.h"
+#include "../uart.h"
 
 void init_average_state(AverageState *state) {
     state->n_samples = 0;
@@ -12,7 +13,7 @@ AverageStatus average(AverageState *state, double new_sample) {
     state->value += alpha*(new_sample - state->value);
 
     if (state->base.debug) {
-        printf("%s:%f,", state->base.name, state->value);
+        uart_printf("%s:%f,", state->base.name, state->value);
     }
 
     return AVERAGE_OK;

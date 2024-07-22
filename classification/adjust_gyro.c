@@ -2,6 +2,7 @@
 #include "../commons/constants.h"
 #include <math.h>
 #include <stdio.h>
+#include "../uart.h"
 
 
 void init_adjust_gyro_state(AdjustGyroState *state) {
@@ -20,7 +21,7 @@ AdjustGyroStatus adjust_gyro(AdjustGyroState *state, BMI2SensAxisData new_sample
     state->value.z = convert_axis_value(new_sample.z);
 
     if (state->base.debug) {
-        printf("%s_x:%f,%s_y:%f,%s_z:%f,", state->base.name, state->value.x, state->base.name, state->value.y, state->base.name, state->value.z);
+        uart_printf("%s_x:%f,%s_y:%f,%s_z:%f,", state->base.name, state->value.x, state->base.name, state->value.y, state->base.name, state->value.z);
     }
 
     return ADJUST_GYRO_OK;

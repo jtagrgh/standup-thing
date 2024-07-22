@@ -2,6 +2,7 @@
 #include "../commons/constants.h"
 #include "../commons/circular_buffer.h"
 #include <stdio.h>
+#include "../uart.h"
 
 
 /*  Cummulative integral using four-points backwards rule. 
@@ -29,7 +30,7 @@ IntegralStatus integral(IntegralState *state, double new_sample) {
         state->value += new_sample * state->interval;
 
         if (state->base.debug) {
-            printf("%s:%f,", state->base.name, state->value);
+            uart_printf("%s:%f,", state->base.name, state->value);
         }
 
         return INTEGRAL_OK;
@@ -47,7 +48,7 @@ IntegralStatus integral(IntegralState *state, double new_sample) {
     state->value += area;
 
     if (state->base.debug) {
-        printf("%s:%f,", state->base.name, state->value);
+        uart_printf("%s:%f,", state->base.name, state->value);
     }
 
     return INTEGRAL_OK;

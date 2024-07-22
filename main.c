@@ -16,16 +16,20 @@ P1.7: UCB0SOMI (peripheral out, controller in) -> BMI270 pin 1
 #include "BMI270_SensorAPI/bmi270.h"
 #include "bmi270_spi.h"
 #include "util.h"
+#include "uart.h"
 #include "cs.h"
 #include "classification/analyze.h"
 #include "classification/classify.h"
 #include "commons/data_formats.h"
 
  // 200hz * 20sec
-#define DATA_LEN 350
+#define DATA_LEN 1000
 
 #pragma PERSISTENT(sensor_data)
 static struct BMI2SensData sensor_data[DATA_LEN] = { { { 0 } } };
+
+#pragma DATA_SECTION(raw_vertical_acc, ".TI.persistent")
+static double raw_vertical_acc[DATA_LEN] = {0};
 
 /******************************************************************************/
 /*!                Macro definition                                           */
@@ -135,6 +139,29 @@ void init_clk() {
     // CS_turnOnLFXT(CS_LFXT_DRIVE_0);
 }
 
+void init_uart() {
+    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P3, GPIO_PIN5, GPIO_PRIMARY_MODULE_FUNCTION);
+    GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P3, GPIO_PIN4, GPIO_PRIMARY_MODULE_FUNCTION);
+
+    // Configure UART
+    EUSCI_A_UART_initParam param = {0};
+    param.selectClockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK;
+    param.clockPrescalar = 4;  // UCBRx
+    param.firstModReg = 5;  // UCBRFx
+    param.secondModReg = 0x55;  // UCBRSx
+    param.parity = EUSCI_A_UART_NO_PARITY;
+    param.msborLsbFirst = EUSCI_A_UART_LSB_FIRST;
+    param.numberofStopBits = EUSCI_A_UART_ONE_STOP_BIT;
+    param.uartMode = EUSCI_A_UART_MODE;
+    param.overSampling = EUSCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION; // OS16
+
+    if (STATUS_FAIL == EUSCI_A_UART_init(EUSCI_A1_BASE, &param)) {
+        return;
+    }
+
+    EUSCI_A_UART_enable(EUSCI_A1_BASE);
+}
+
 /*!
  * @brief This internal API is used to set configurations for any-motion.
  */
@@ -203,10 +230,11 @@ int main(void) {
 
     init_clk();
     init_spi();
+    init_uart();
     init_bmi_device(&bmi);
 
-    char output[64];
-    int len;
+    //char output[64];
+    //int len;
 
     /* Initialize bmi270. */
     rslt = bmi270_init(&bmi);
@@ -285,16 +313,16 @@ int main(void) {
                         }
 
                         AnalysisResult result = {0};
-                        printf("analyzing...\n");
+                        //printf("analyzing...\n");
                         uint8_t debug = 1;
                         AnalysisStatus status = analyze(sensor_data, DATA_LEN, sensor_data[0], debug, &result);
                         
-                        printf("analyzed!\n");
+                        //printf("analyzed!\n");
                         switch (result.classification) {
-                            case SIT: printf("SIT\n"); break;
-                            case STAND: printf("STAND\n"); break;
-                            case OTHER: printf("OTHER\n"); break;
-                            case LENGTH: printf("LENGTH\n"); break;
+                            case SIT: uart_printf("SIT\n"); break;
+                            case STAND: uart_printf("STAND\n"); break;
+                            case OTHER: uart_printf("OTHER\n"); break;
+                            case LENGTH: uart_printf("LENGTH\n"); break;
                         }
                     }
                 } while (rslt == BMI2_OK);
