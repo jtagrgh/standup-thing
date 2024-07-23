@@ -1,4 +1,5 @@
 #include "vec3d.h"
+#include "quaternion.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -89,6 +90,61 @@ Vec3d vec3d_rotate_about_z(Vec3d a, double angle) {
         a.z
     };
 }
+
+/*
+Vec3d vec3d_rotate_by_quaternion(Vec3d a, Vec3d rotation_vector, double period){
+    Vec3d rotated = a;
+    //Quaternion product of (0, rotation_vector) x (0, rotated) 
+    double r = -1 * vec3d_dot_product(rotation_vector, rotated);
+    double x = -1 * rotation_vector.z * rotated.y   +  rotation_vector.y * rotated.z;
+    double y = rotation_vector.z * rotated.x   -   rotation_vector.x * rotated.z;
+    double z = -1 * rotation_vector.y * rotated.x + rotation_vector.x * rotated.y;
+
+    //multiply by dt/2
+    r *= (0.5) * (period);
+    x *= (0.5) * (period);
+    y *= (0.5) * (period);
+    z *= (0.5) * (period);
+
+    //summing the previous product and rotated
+    x += rotated.x;
+    y += rotated.y;
+    z += rotated.z;
+
+}
+*/
+
+Vec3d vec3d_rotate_by_quaternion(Vec3d a, Vec3d rotation_vector, double period){
+    
+    double cx = cos(rotation_vector.x * 0.5 * period);
+    double sx = sin(rotation_vector.x * 0.5 * period);
+    double cy = cos(rotation_vector.y * 0.5 * period);
+    double sy = sin(rotation_vector.y * 0.5 * period);
+    double cz = cos(rotation_vector.z * 0.5 * period);
+    double sz = sin(rotation_vector.z * 0.5 * period);
+
+    //convert rotation vector to a quaternion
+    double qw  = cx*cy*cz + sx*sy*sz;
+    double qx  = sx*cy*cz - cx*sy*sz;
+    double qy  = cx*sy*cz + sx*cy*sz; 
+    double qz  = cx*cy*sz - sx*sy*cz; 
+
+    Quaternion q = (Quaternion){qw,qx,qy,qz};
+    //conjugate
+    Quaternion qn = (Quaternion){qw,-1*qx,-1*qy,-1*qz};
+    //Target vector
+    Quaternion rotated = (Quaternion){0, a.x, a.y, a.z};
+
+    // qxrxq'
+    Quaternion result = quaternion_product(quaternion_product(q,rotated), qn);
+
+    return (Vec3d){result.x, result.y, result.z};
+
+    
+
+
+}
+
 
 Vec3d vec3d_rotate_by_rotation_vector_assuming_things_that_arent_true(Vec3d a, Vec3d rotation_vector) {
     Vec3d rotated = a;
