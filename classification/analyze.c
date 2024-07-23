@@ -5,6 +5,7 @@
 #include "adjust_gyro.h"
 #include "integral.h"
 #include "integral_3d.h"
+#include "integral_update_3d.h"
 #include "rotate_vector.h"
 #include "vector_component.h"
 #include "add.h"
@@ -26,21 +27,27 @@ AnalysisStatus analyze(
         uint8_t debug,
         AnalysisResult *out) {
 
-    BMI2SensAxisData mean_g = {0, 0, 0};
-    for (int i = 0; i < (data_length > 100 ? 100 : 1); i++) {
-        int n = i + 1;
-        mean_g.x += 1.0/n * (data[data_length - n - 1].acc.x - mean_g.x);
-        mean_g.y += 1.0/n * (data[data_length - n - 1].acc.y - mean_g.y);
-        mean_g.z += 1.0/n * (data[data_length - n - 1].acc.z - mean_g.z);
-    }
-
     AdjustAccelerationState acc_adj;
     init_analysis_functor(&acc_adj.base, debug, "acc_adj");
     init_adjust_acceleration_state(&acc_adj);
 
     AdjustAccelerationState g_adj;
-    init_analysis_functor(&g_adj.base, debug, "g_adj");
+    init_analysis_functor(&g_adj.base, 0, "g_adj");
     init_adjust_acceleration_state(&g_adj);
+    adjust_acceleration(&g_adj, g.acc);
+
+    RotateVectorState g_rot;
+    init_analysis_functor(&g_rot.base, debug, "g_rot");
+    init_rotation_vector_state(&g_rot);
+    g_rot.value = g_adj.value;
+
+    AdjustGyroState gyr_adj;
+    init_analysis_functor(&gyr_adj.base, debug, "gyr_adj");
+    init_adjust_gyro_state(&gyr_adj);
+
+    IntegralUpdate3dState rot_vec;
+    init_analysis_functor(&rot_vec.base, debug, "rot_vec");
+    init_integral_update_3d_state(&rot_vec, SAMPLE_PERIOD);
 
     VectorComponentState vert_acc;
     init_analysis_functor(&vert_acc.base, debug, "vert_acc");
@@ -61,8 +68,10 @@ AnalysisStatus analyze(
     int i = 0;
     for (i = 0; i < data_length; i++) {
         adjust_acceleration(&acc_adj, data[i].acc);
-        adjust_acceleration(&g_adj, mean_g);
-        vector_component(&vert_acc, acc_adj.value, g_adj.value);
+        adjust_gyro(&gyr_adj, data[i].gyr);
+        integral_update_3d(&rot_vec, gyr_adj.value);
+        rotate_vector(&g_rot, g_rot.value, rot_vec.value);
+        vector_component(&vert_acc, acc_adj.value, g_rot.value);
         integral(&vert_vel, vert_acc.value);
         integral(&vert_pos, vert_vel.value);
         average(&avg_vert_pos, vert_pos.value);

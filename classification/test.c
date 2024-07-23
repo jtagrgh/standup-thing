@@ -3,6 +3,7 @@
 #include "average.h"
 #include "integral.h"
 #include "integral_3d.h"
+#include "integral_update_3d.h"
 #include "adjust_acceleration.h"
 #include "vector_component.h"
 #include "../commons/constants.h"
@@ -55,6 +56,26 @@ int main(int argc, char *argv[]) {
 		printf("Integral 3D: %f, %f, %f, N_samples %d \n", integral_state.value.x, integral_state.value.y, integral_state.value.z, integral_state.x.n_samples);
 		printf("\n");
 	}
+
+	{
+		Vec3d values[] = {
+			{.x = 1, .y = 1, .z = -1},
+			{.x = 2, .y = 2, .z = -2},
+			{.x = 3, .y = 3, .z = -3},
+			{.x = 4, .y = 4, .z = -4},
+			{.x = 5, .y = 5, .z = -5}
+		};
+		IntegralUpdate3dState integral_update_state;
+		init_analysis_functor(&integral_update_state.base, 1, "integral_update_3d");
+		init_integral_update_3d_state(&integral_update_state, 1);
+		for (int i = 0; i < 5; i++) {
+			integral_update_3d(&integral_update_state, values[i]);
+			printf("\n");
+		}
+		printf("Integral Update 3D: %f, %f, %f, N_samples %d \n", integral_update_state.value.x, integral_update_state.value.y, integral_update_state.value.z, integral_update_state.x.n_samples);
+		printf("\n");
+	}
+
 
 	/* Sample from python.
 		           time        ax        ay        az        gx        gy        gz  \
@@ -133,13 +154,13 @@ int main(int argc, char *argv[]) {
 			{.acc = {.x = -4553, .y = -3468, .z = 14228}, .gyr = {.x = 16, .y = -9, .z = -4}, .sens_time = 1462},
 			{.acc = {.x = -4502, .y = -3566, .z = 14057}, .gyr = {.x = 17, .y = -6, .z = 0}, .sens_time = 1476},
 			{.acc = {.x = -4485, .y = -3720, .z = 14912}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1354},
-			{.acc = {.x = -4596*4, .y = -3630, .z = 15011}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1367},
-			{.acc = {.x = -4614*4, .y = -3429, .z = 14823}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1381},
-			{.acc = {.x = -4704*4, .y = -3499, .z = 14673}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1394},
-			{.acc = {.x = -4410*4, .y = -3516, .z = 14628}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1408},
-			{.acc = {.x = -4467*4, .y = -3309, .z = 14540}, .gyr = {.x = 12, .y = -9, .z = -7}, .sens_time = 1421},
-			{.acc = {.x = -4488*4, .y = -3134, .z = 14328}, .gyr = {.x = 12, .y = -10, .z = -7}, .sens_time = 1435},
-			{.acc = {.x = -4481*4, .y = -3209, .z = 14235}, .gyr = {.x = 14, .y = -10, .z = -6}, .sens_time = 1449},
+			{.acc = {.x = -4596*4, .y = -3630, .z = 15011}, .gyr = {.x =10000, .y = 0, .z = 0}, .sens_time = 1367},
+			{.acc = {.x = -4614*4, .y = -3429, .z = 14823}, .gyr = {.x =10000, .y = 0, .z = 0}, .sens_time = 1381},
+			{.acc = {.x = -4704*4, .y = -3499, .z = 14673}, .gyr = {.x =10000, .y = 0, .z = 0}, .sens_time = 1394},
+			{.acc = {.x = -4410*4, .y = -3516, .z = 14628}, .gyr = {.x =10000, .y = 0, .z = 0}, .sens_time = 1408},
+			{.acc = {.x = -4467*4, .y = -3309, .z = 14540}, .gyr = {.x = 10000, .y = -9, .z = -7}, .sens_time = 1421},
+			{.acc = {.x = -4488*4, .y = -3134, .z = 14328}, .gyr = {.x = 10000, .y = -10, .z = -7}, .sens_time = 1435},
+			{.acc = {.x = -4481*4, .y = -3209, .z = 14235}, .gyr = {.x = 10000, .y = -10, .z = -6}, .sens_time = 1449},
 			{.acc = {.x = -4553*4, .y = -3468, .z = 14228}, .gyr = {.x = 16, .y = -9, .z = -4}, .sens_time = 1462},
 			{.acc = {.x = -4502*4, .y = -3566, .z = 14057}, .gyr = {.x = 17, .y = -6, .z = 0}, .sens_time = 1476},
 			{.acc = {.x = -4485*4, .y = -3720, .z = 14912}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1354},
@@ -147,12 +168,12 @@ int main(int argc, char *argv[]) {
 			{.acc = {.x = -4614*4, .y = -3429, .z = 14823}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1381},
 			{.acc = {.x = -4704*4, .y = -3499, .z = 14673}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1394},
 			{.acc = {.x = -4410*4, .y = -3516, .z = 14628}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1408},
-			{.acc = {.x = -4467*4, .y = -3309, .z = 14540}, .gyr = {.x = 12, .y = -9, .z = -7}, .sens_time = 1421},
-			{.acc = {.x = -4488*4, .y = -3134, .z = 14328}, .gyr = {.x = 12, .y = -10, .z = -7}, .sens_time = 1435},
-			{.acc = {.x = -4481*2, .y = -3209, .z = 14235}, .gyr = {.x = 14, .y = -10, .z = -6}, .sens_time = 1449},
-			{.acc = {.x = -4553*2, .y = -3468, .z = 14228}, .gyr = {.x = 16, .y = -9, .z = -4}, .sens_time = 1462},
-			{.acc = {.x = -4502*2, .y = -3566, .z = 14057}, .gyr = {.x = 17, .y = -6, .z = 0}, .sens_time = 1476},
-			{.acc = {.x = -4485*2, .y = -3720, .z = 14912}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1354},
+			{.acc = {.x = -4467*4, .y = -3309, .z = 14540}, .gyr = {.x = -10000, .y = -9, .z = -7}, .sens_time = 1421},
+			{.acc = {.x = -4488*4, .y = -3134, .z = 14328}, .gyr = {.x = -10000, .y = -10, .z = -7}, .sens_time = 1435},
+			{.acc = {.x = -4481*2, .y = -3209, .z = 14235}, .gyr = {.x = -10000, .y = -10, .z = -6}, .sens_time = 1449},
+			{.acc = {.x = -4553*2, .y = -3468, .z = 14228}, .gyr = {.x = -10000, .y = -9, .z = -4}, .sens_time = 1462},
+			{.acc = {.x = -4502*2, .y = -3566, .z = 14057}, .gyr = {.x = -10000, .y = -6, .z = 0}, .sens_time = 1476},
+			{.acc = {.x = -4485*2, .y = -3720, .z = 14912}, .gyr = {.x =- 10000, .y = 0, .z = 0}, .sens_time = 1354},
 			{.acc = {.x = -4596*2, .y = -3630, .z = 15011}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1367},
 			{.acc = {.x = -4614*2, .y = -3429, .z = 14823}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1381},
 			{.acc = {.x = -4704*2, .y = -3499, .z = 14673}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1394},
@@ -162,21 +183,21 @@ int main(int argc, char *argv[]) {
 			{.acc = {.x = -4481*2, .y = -3209, .z = 14235}, .gyr = {.x = 14, .y = -10, .z = -6}, .sens_time = 1449},
 			{.acc = {.x = -4553*2, .y = -3468, .z = 14228}, .gyr = {.x = 16, .y = -9, .z = -4}, .sens_time = 1462},
 			{.acc = {.x = -4502*2, .y = -3566, .z = 14057}, .gyr = {.x = 17, .y = -6, .z = 0}, .sens_time = 1476},
-			{.acc = {.x = -4485*2, .y = -3720, .z = 14912}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1354},
-			{.acc = {.x = -4596*2, .y = -3630, .z = 15011}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1367},
-			{.acc = {.x = -4614*2, .y = -3429, .z = 14823}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1381},
-			{.acc = {.x = -4704*2, .y = -3499, .z = 14673}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1394},
-			{.acc = {.x = -4410*2, .y = -3516, .z = 14628}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1408},
+			{.acc = {.x = -4485*2, .y = -3720, .z = 14912}, .gyr = {.x = 0, .y = 0, .z = 10000}, .sens_time = 1354},
+			{.acc = {.x = -4596*2, .y = -3630, .z = 15011}, .gyr = {.x = 0, .y = 0, .z = 10000}, .sens_time = 1367},
+			{.acc = {.x = -4614*2, .y = -3429, .z = 14823}, .gyr = {.x = 0, .y = 0, .z = 10000}, .sens_time = 1381},
+			{.acc = {.x = -4704*2, .y = -3499, .z = 14673}, .gyr = {.x = 0, .y = 0, .z = 10000}, .sens_time = 1394},
+			{.acc = {.x = -4410*2, .y = -3516, .z = 14628}, .gyr = {.x = 0, .y = 0, .z = 10000}, .sens_time = 1408},
 			{.acc = {.x = -4467*2, .y = -3309, .z = 14540}, .gyr = {.x = 12, .y = -9, .z = -7}, .sens_time = 1421},
 			{.acc = {.x = -4488*2, .y = -3134, .z = 14328}, .gyr = {.x = 12, .y = -10, .z = -7}, .sens_time = 1435},
 			{.acc = {.x = -4481*2, .y = -3209, .z = 14235}, .gyr = {.x = 14, .y = -10, .z = -6}, .sens_time = 1449},
 			{.acc = {.x = -4553*2, .y = -3468, .z = 14228}, .gyr = {.x = 16, .y = -9, .z = -4}, .sens_time = 1462},
 			{.acc = {.x = -4502*2, .y = -3566, .z = 14057}, .gyr = {.x = 17, .y = -6, .z = 0}, .sens_time = 1476},
-			{.acc = {.x = -4485*2, .y = -3720, .z = 14912}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1354},
-			{.acc = {.x = -4596*2, .y = -3630, .z = 15011}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1367},
-			{.acc = {.x = -4614*2, .y = -3429, .z = 14823}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1381},
-			{.acc = {.x = -4704*2, .y = -3499, .z = 14673}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1394},
-			{.acc = {.x = -4410*2, .y = -3516, .z = 14628}, .gyr = {.x = 0, .y = 0, .z = 0}, .sens_time = 1408},
+			{.acc = {.x = -4485*2, .y = -3720, .z = 14912}, .gyr = {.x = 0, .y = 0, .z = -10000}, .sens_time = 1354},
+			{.acc = {.x = -4596*2, .y = -3630, .z = 15011}, .gyr = {.x = 0, .y = 0, .z = -10000}, .sens_time = 1367},
+			{.acc = {.x = -4614*2, .y = -3429, .z = 14823}, .gyr = {.x = 0, .y = 0, .z = -10000}, .sens_time = 1381},
+			{.acc = {.x = -4704*2, .y = -3499, .z = 14673}, .gyr = {.x = 0, .y = 0, .z = -10000}, .sens_time = 1394},
+			{.acc = {.x = -4410*2, .y = -3516, .z = 14628}, .gyr = {.x = 0, .y = 0, .z = -10000}, .sens_time = 1408},
 			{.acc = {.x = -4467*2, .y = -3309, .z = 14540}, .gyr = {.x = 12, .y = -9, .z = -7}, .sens_time = 1421},
 			{.acc = {.x = -4488*2, .y = -3134, .z = 14328}, .gyr = {.x = 12, .y = -10, .z = -7}, .sens_time = 1435},
 			{.acc = {.x = -4481*2, .y = -3209, .z = 14235}, .gyr = {.x = 14, .y = -10, .z = -6}, .sens_time = 1449},
@@ -185,7 +206,7 @@ int main(int argc, char *argv[]) {
 		};
 
 		AnalysisResult result;
-		AnalysisStatus status = analyze(test_data, 169 - 115, test_data[0], 1, &result);
+		AnalysisStatus status = analyze(test_data, 205 - 136, test_data[0], 1, &result);
 		printf("\nAnalysis result: %d \n", result.classification);
 	}
 
