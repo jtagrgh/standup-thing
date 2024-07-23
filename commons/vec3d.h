@@ -23,7 +23,7 @@ Vec3d vec3d_rotate_vector(Vec3d a, Vec3d axis, double angle);
 Vec3d vec3d_rotate_about_x(Vec3d a, double angle);
 Vec3d vec3d_rotate_about_y(Vec3d a, double angle);
 Vec3d vec3d_rotate_about_z(Vec3d a, double angle);
-Vec3d vec3d_rotate_by_quaternion(Vec3d a, Vec3d rotation_vector, double period);
+Vec3d vec3d_rotate_by_quaternion(Vec3d a, Vec3d rotation_vector);
 Vec3d vec3d_rotate_by_rotation_vector_assuming_things_that_arent_true(Vec3d a, Vec3d rotation_vector);
 
 #endif

@@ -1,5 +1,6 @@
 #include "vec3d.h"
 #include "quaternion.h"
+#include "constants.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -114,14 +115,14 @@ Vec3d vec3d_rotate_by_quaternion(Vec3d a, Vec3d rotation_vector, double period){
 }
 */
 
-Vec3d vec3d_rotate_by_quaternion(Vec3d a, Vec3d rotation_vector, double period){
+Vec3d vec3d_rotate_by_quaternion(Vec3d a, Vec3d rotation_vector){
     
-    double cx = cos(rotation_vector.x * 0.5 * period);
-    double sx = sin(rotation_vector.x * 0.5 * period);
-    double cy = cos(rotation_vector.y * 0.5 * period);
-    double sy = sin(rotation_vector.y * 0.5 * period);
-    double cz = cos(rotation_vector.z * 0.5 * period);
-    double sz = sin(rotation_vector.z * 0.5 * period);
+    double cx = cos(rotation_vector.x * 0.5 * SAMPLE_PERIOD);
+    double sx = sin(rotation_vector.x * 0.5 * SAMPLE_PERIOD);
+    double cy = cos(rotation_vector.y * 0.5 * SAMPLE_PERIOD);
+    double sy = sin(rotation_vector.y * 0.5 * SAMPLE_PERIOD);
+    double cz = cos(rotation_vector.z * 0.5 * SAMPLE_PERIOD);
+    double sz = sin(rotation_vector.z * 0.5 * SAMPLE_PERIOD);
 
     //convert rotation vector to a quaternion
     double qw  = cx*cy*cz + sx*sy*sz;
